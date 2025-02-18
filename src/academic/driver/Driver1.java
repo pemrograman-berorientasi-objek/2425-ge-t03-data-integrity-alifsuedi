@@ -9,10 +9,9 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * @author 12S23025-Alif Aflah Suedi
- * @author 12S23039-Prisca R. Manurung
+ * 12S23025-Alif Aflah Suedi
+ * 12S23039-Prisca R. Manurung
  */
-
 public class Driver1 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -77,8 +76,8 @@ public class Driver1 {
         }
 
         // Sorting Lists
-        courses.sort(Comparator.comparing(Course::getCode)); // Sort ascending
-        students.sort(Comparator.comparing(Student::getId)); // Sort ascending
+        courses.sort(Comparator.comparing(Course::getCode).reversed()); // Sort descending
+        students.sort(Comparator.comparing(Student::getId).reversed()); // Sort descending
         enrollments.sort(Comparator.comparing(Enrollment::getCourseCode)
                 .thenComparing(Enrollment::getStudentId)
                 .thenComparing(Enrollment::getAcademicYear)
