@@ -4,9 +4,7 @@ import academic.model.Course;
 import academic.model.Student;
 import academic.model.Enrollment;
 import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * 12S23025-Alif Aflah Suedi
@@ -15,9 +13,13 @@ import java.util.List;
 public class Driver1 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        List<Course> courses = new ArrayList<>();
-        List<Student> students = new ArrayList<>();
-        List<Enrollment> enrollments = new ArrayList<>();
+        Course[] courses = new Course[100];
+        Student[] students = new Student[100];
+        Enrollment[] enrollments = new Enrollment[100];
+
+        int courseCount = 0;
+        int studentCount = 0;
+        int enrollmentCount = 0;
 
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
@@ -36,8 +38,16 @@ public class Driver1 {
                             int credits = Integer.parseInt(segments[3]);
                             String grade = segments[4];
 
-                            if (courses.stream().noneMatch(course -> course.getCode().equals(code))) {
-                                courses.add(new Course(code, name, credits, grade));
+                            boolean exists = false;
+                            for (int i = 0; i < courseCount; i++) {
+                                if (courses[i].getCode().equals(code)) {
+                                    exists = true;
+                                    break;
+                                }
+                            }
+
+                            if (!exists) {
+                                courses[courseCount++] = new Course(code, name, credits, grade);
                             }
                         }
                         break;
@@ -49,8 +59,16 @@ public class Driver1 {
                             int year = Integer.parseInt(segments[3]);
                             String major = segments[4];
 
-                            if (students.stream().noneMatch(student -> student.getId().equals(id))) {
-                                students.add(new Student(id, name, year, major));
+                            boolean exists = false;
+                            for (int i = 0; i < studentCount; i++) {
+                                if (students[i].getId().equals(id)) {
+                                    exists = true;
+                                    break;
+                                }
+                            }
+
+                            if (!exists) {
+                                students[studentCount++] = new Student(id, name, year, major);
                             }
                         }
                         break;
@@ -62,12 +80,19 @@ public class Driver1 {
                             String academicYear = segments[3];
                             String semester = segments[4];
 
-                            if (enrollments.stream().noneMatch(enrollment -> 
-                                    enrollment.getCourseCode().equals(courseCode) &&
-                                    enrollment.getStudentId().equals(studentId) &&
-                                    enrollment.getAcademicYear().equals(academicYear) &&
-                                    enrollment.getSemester().equals(semester))) {
-                                enrollments.add(new Enrollment(courseCode, studentId, academicYear, semester));
+                            boolean exists = false;
+                            for (int i = 0; i < enrollmentCount; i++) {
+                                if (enrollments[i].getCourseCode().equals(courseCode) &&
+                                    enrollments[i].getStudentId().equals(studentId) &&
+                                    enrollments[i].getAcademicYear().equals(academicYear) &&
+                                    enrollments[i].getSemester().equals(semester)) {
+                                    exists = true;
+                                    break;
+                                }
+                            }
+
+                            if (!exists) {
+                                enrollments[enrollmentCount++] = new Enrollment(courseCode, studentId, academicYear, semester);
                             }
                         }
                         break;
@@ -75,36 +100,41 @@ public class Driver1 {
             }
         }
 
-        // Sorting Lists
-        courses.sort(Comparator.comparing(Course::getCode).reversed()); // Sort descending
-        students.sort(Comparator.comparing(Student::getId).reversed()); // Sort descending
-        enrollments.sort(Comparator.comparing(Enrollment::getCourseCode)
-                .thenComparing(Enrollment::getStudentId)
-                .thenComparing(Enrollment::getAcademicYear)
-                .thenComparing(Enrollment::getSemester));
+        // Sorting Arrays
+        Arrays.sort(courses, 0, courseCount, (c1, c2) -> c2.getCode().compareTo(c1.getCode())); // Sort descending
+        Arrays.sort(students, 0, studentCount, (s1, s2) -> s2.getId().compareTo(s1.getId())); // Sort descending
+        Arrays.sort(enrollments, 0, enrollmentCount, (e1, e2) -> {
+            int cmp = e1.getCourseCode().compareTo(e2.getCourseCode());
+            if (cmp != 0) return cmp;
+            cmp = e1.getStudentId().compareTo(e2.getStudentId());
+            if (cmp != 0) return cmp;
+            cmp = e1.getAcademicYear().compareTo(e2.getAcademicYear());
+            if (cmp != 0) return cmp;
+            return e1.getSemester().compareTo(e2.getSemester());
+        });
 
-        printCourses(courses);
-        printStudents(students);
-        printEnrollments(enrollments);
+        printCourses(courses, courseCount);
+        printStudents(students, studentCount);
+        printEnrollments(enrollments, enrollmentCount);
 
         scanner.close();
     }
 
-    private static void printCourses(List<Course> courses) {
-        for (Course course : courses) {
-            System.out.println(course.getCode() + "|" + course.getName() + "|" + course.getCredits() + "|" + course.getGrade());
+    private static void printCourses(Course[] courses, int count) {
+        for (int i = 0; i < count; i++) {
+            System.out.println(courses[i].getCode() + "|" + courses[i].getName() + "|" + courses[i].getCredits() + "|" + courses[i].getGrade());
         }
     }
 
-    private static void printStudents(List<Student> students) {
-        for (Student student : students) {
-            System.out.println(student.getId() + "|" + student.getName() + "|" + student.getYear() + "|" + student.getMajor());
+    private static void printStudents(Student[] students, int count) {
+        for (int i = 0; i < count; i++) {
+            System.out.println(students[i].getId() + "|" + students[i].getName() + "|" + students[i].getYear() + "|" + students[i].getMajor());
         }
     }
 
-    private static void printEnrollments(List<Enrollment> enrollments) {
-        for (Enrollment enrollment : enrollments) {
-            System.out.println(enrollment.getCourseCode() + "|" + enrollment.getStudentId() + "|" + enrollment.getAcademicYear() + "|" + enrollment.getSemester() + "|None");
+    private static void printEnrollments(Enrollment[] enrollments, int count) {
+        for (int i = 0; i < count; i++) {
+            System.out.println(enrollments[i].getCourseCode() + "|" + enrollments[i].getStudentId() + "|" + enrollments[i].getAcademicYear() + "|" + enrollments[i].getSemester() + "|None");
         }
     }
 }
