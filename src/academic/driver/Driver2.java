@@ -57,19 +57,22 @@ public class Driver2 {
                             String studentId = segments[2];
                             String academicYear = segments[3];
                             String semester = segments[4];
-                            boolean courseExists = courses.stream().anyMatch(course -> course.getCode().equals(courseCode));
-                            boolean studentExists = students.stream().anyMatch(student -> student.getId().equals(studentId));
-                            if (!courseExists) {
+
+                            boolean validCourse = courses.stream().anyMatch(course -> course.getCode().equals(courseCode));
+                            boolean validStudent = students.stream().anyMatch(student -> student.getId().equals(studentId));
+
+                            if (!validCourse) {
                                 System.out.println("invalid course|" + courseCode);
-                            } else if (!studentExists) {
+                            } else if (!validStudent) {
                                 System.out.println("invalid student|" + studentId);
                             } else {
-                                boolean enrollmentExists = enrollments.stream().anyMatch(enrollment -> 
-                                    enrollment.getCourseCode().equals(courseCode) && 
-                                    enrollment.getStudentId().equals(studentId) && 
-                                    enrollment.getAcademicYear().equals(academicYear) && 
-                                    enrollment.getSemester().equals(semester));
-                                if (!enrollmentExists) {
+                                boolean isDuplicateEnrollment = enrollments.stream().anyMatch(enrollment ->
+                                        enrollment.getCourseCode().equals(courseCode) &&
+                                        enrollment.getStudentId().equals(studentId) &&
+                                        enrollment.getAcademicYear().equals(academicYear) &&
+                                        enrollment.getSemester().equals(semester));
+
+                                if (!isDuplicateEnrollment) {
                                     enrollments.add(new Enrollment(courseCode, studentId, academicYear, semester));
                                 }
                             }
