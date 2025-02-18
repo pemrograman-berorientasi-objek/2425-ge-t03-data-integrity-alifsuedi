@@ -77,6 +77,14 @@ public class Driver1 {
             }
         }
 
+        // Sort the lists before printing
+        courses.sort(Comparator.comparing(Course::getCode));
+        students.sort(Comparator.comparing(Student::getId));
+        enrollments.sort(Comparator.comparing(Enrollment::getCourseCode)
+                .thenComparing(Enrollment::getStudentId)
+                .thenComparing(Enrollment::getAcademicYear)
+                .thenComparing(Enrollment::getSemester));
+
         printCourses(courses);
         printStudents(students);
         printEnrollments(enrollments);
