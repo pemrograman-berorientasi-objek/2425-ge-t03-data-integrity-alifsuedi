@@ -4,10 +4,11 @@ import academic.model.Course;
 import academic.model.Student;
 import academic.model.Enrollment;
 import java.util.Scanner;
+import java.util.Arrays;
 
 /**
- * @author 12S23025-Alif Aflah Suedi
- * @author 12S23039-Prisca R. Manurung
+ * 12S23025-Alif Aflah Suedi
+ * 12S23039-Prisca R. Manurung
  */
 public class Driver2 {
     public static void main(String[] _args) {
@@ -97,13 +98,26 @@ public class Driver2 {
         input.close();
         System.out.print(invalidEntries.toString());
 
+        // Sorting Arrays
+        Arrays.sort(courses, 0, courseCount, (c1, c2) -> c1.getCode().compareTo(c2.getCode())); // Sort ascending
+        Arrays.sort(students, 0, studentCount, (s1, s2) -> s1.getId().compareTo(s2.getId())); // Sort ascending
+        Arrays.sort(enrollments, 0, enrollmentCount, (e1, e2) -> {
+            int cmp = e1.getCourseCode().compareTo(e2.getCourseCode());
+            if (cmp != 0) return cmp;
+            cmp = e1.getStudentId().compareTo(e2.getStudentId());
+            if (cmp != 0) return cmp;
+            cmp = e1.getAcademicYear().compareTo(e2.getAcademicYear());
+            if (cmp != 0) return cmp;
+            return e1.getSemester().compareTo(e2.getSemester());
+        });
+
         // Cetak semua courses
-        for (int i = courseCount - 1; i >= 0; i--) {
+        for (int i = 0; i < courseCount; i++) {
             System.out.println(courses[i].getCode() + "|" + courses[i].getName() + "|" + courses[i].getCredits() + "|" + courses[i].getGrade());
         }
 
         // Cetak semua students
-        for (int i = studentCount - 1; i >= 0; i--) {
+        for (int i = 0; i < studentCount; i++) {
             System.out.println(students[i].getId() + "|" + students[i].getName() + "|" + students[i].getYear() + "|" + students[i].getMajor());
         }
 
