@@ -101,8 +101,8 @@ public class Driver1 {
         }
 
         // Sorting Arrays
-        Arrays.sort(courses, 0, courseCount, (c1, c2) -> c2.getCode().compareTo(c1.getCode())); // Sort descending
-        Arrays.sort(students, 0, studentCount, (s1, s2) -> s2.getId().compareTo(s1.getId())); // Sort descending
+        Arrays.sort(courses, 0, courseCount, (c1, c2) -> c1.getCode().compareTo(c2.getCode())); // Sort ascending
+        Arrays.sort(students, 0, studentCount, (s1, s2) -> s1.getId().compareTo(s2.getId())); // Sort ascending
         Arrays.sort(enrollments, 0, enrollmentCount, (e1, e2) -> {
             int cmp = e1.getCourseCode().compareTo(e2.getCourseCode());
             if (cmp != 0) return cmp;
