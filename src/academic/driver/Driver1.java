@@ -32,7 +32,10 @@ import java.util.ArrayList;
                              String name = segments[2];
                              int credits = Integer.parseInt(segments[3]);
                              String grade = segments[4];
-                             courses.add(new Course(code, name, credits, grade));
+                             boolean exists = courses.stream().anyMatch(course -> course.getCode().equals(code));
+                             if (!exists) {
+                                 courses.add(new Course(code, name, credits, grade));
+                             }
                          }
                          break;
                      case "student-add":
@@ -41,7 +44,10 @@ import java.util.ArrayList;
                              String name = segments[2];
                              int year = Integer.parseInt(segments[3]);
                              String major = segments[4];
-                             students.add(new Student(id, name, year, major));
+                             boolean exists = students.stream().anyMatch(student -> student.getId().equals(id));
+                             if (!exists) {
+                                 students.add(new Student(id, name, year, major));
+                             }
                          }
                          break;
                      case "enrollment-add":
@@ -50,7 +56,14 @@ import java.util.ArrayList;
                              String studentId = segments[2];
                              String academicYear = segments[3];
                              String semester = segments[4];
-                             enrollments.add(new Enrollment(courseCode, studentId, academicYear, semester));
+                             boolean exists = enrollments.stream().anyMatch(enrollment -> 
+                                 enrollment.getCourseCode().equals(courseCode) && 
+                                 enrollment.getStudentId().equals(studentId) && 
+                                 enrollment.getAcademicYear().equals(academicYear) && 
+                                 enrollment.getSemester().equals(semester));
+                             if (!exists) {
+                                 enrollments.add(new Enrollment(courseCode, studentId, academicYear, semester));
+                             }
                          }
                          break;
                  }
