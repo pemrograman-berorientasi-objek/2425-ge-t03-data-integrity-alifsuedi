@@ -1,10 +1,5 @@
 package academic.model;
 
-/**
- * @author 12S23025-Alif Aflah Suedi
- * @author 12S23039-Prisca R. Manurung
- */
-
 public class Course {
     private String code;
     private String name;
@@ -33,5 +28,9 @@ public class Course {
     public String getGrade() {
         return grade;
     }
-}
 
+    @Override
+    public String toString() {
+        return code + "|" + name + "|" + credits + "|" + grade;
+    }
+}

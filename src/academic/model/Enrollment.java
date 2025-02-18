@@ -1,9 +1,5 @@
 package academic.model;
 
-/**
- * @author 12S23025-Alif Aflah Suedi 
- * @author 12S23039-Prisca R. Manurung
- */
 public class Enrollment {
     private String courseCode;
     private String studentId;
@@ -31,5 +27,10 @@ public class Enrollment {
 
     public String getSemester() {
         return semester;
+    }
+
+    @Override
+    public String toString() {
+        return courseCode + "|" + studentId + "|" + academicYear + "|" + semester + "|None";
     }
 }
